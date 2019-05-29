@@ -111,6 +111,7 @@ export class NewsComponent implements OnInit, AfterViewInit {
         } else {
           this.newsCount = res.mentions;
           this.newsMentions = res.data;
+          this.newsMentions.sort(sortBySent)
           this.newsMentions_ = clone(res.data);
           this.newsMentionsCopy = res.data.slice();
           this.importantMentions = [
@@ -305,39 +306,6 @@ export class NewsComponent implements OnInit, AfterViewInit {
   //   this.newsMentions = clone(this.newsMentions_);
   //   this.newsMentions = this.newsMentions.filter(
   //     data => data.sentiment === 'news'
-  const axios : require('axios');
-  const api : 'https://us-central1-versus-dev-212614.cloudfunctions.net/versus_dashboard_all_news_mentions';
-  const body : {
-    "docRef": "nqaXKB0SzWN6xh7RVyzl"
-  }
-  async  function fetchDate() {
-    try {
-      const res = await axios.post(api, body)
-      const result = res.data.data;
-      result.sort(sortBySent)
-      console.log(result)
-    } catch (error) {
-      log(error.response)
-    }
-  }
-  const sortBySent = function(a, b) {
-    const ax = a.sentiment;
-    const bx  = b.sentiment;
-    if (ax > bx) {
-      return -1;
-    } if (ax < bx) {
-      return 1;
-    }
-    return 0;
-  };
-  
-  fetchDate()  //   );
-  //   console.log(this.newsMentions);
-  // }
-
-
-
-
 
   getOthers() {
     this.progressBar.start();
@@ -471,3 +439,13 @@ export class NewsComponent implements OnInit, AfterViewInit {
     );
   }
 }
+  const sortBySent = function(a, b) {
+    const ax = a.sentiment;
+    const bx  = b.sentiment;
+    if (ax > bx) {
+      return -1;
+    } if (ax < bx) {
+      return 1;
+    }
+    return 0;
+  };
